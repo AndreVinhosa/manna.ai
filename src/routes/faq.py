@@ -55,7 +55,7 @@ def get_gemini_answer(question):
             "Perguntas e Respostas do FAQ da Manna Bridge:\n\n"
         ]
         for item in faq_data:
-            prompt_parts.append(f"Q: {item['question']}\nA: {item['answer']}\n")
+            prompt_parts.append(f"Q: {item["question"]}\nA: {item["answer"]}\n")
         
         prompt_parts.append(f"\nPergunta do usuário: {question}")
         prompt_parts.append("Resposta:")
@@ -66,6 +66,16 @@ def get_gemini_answer(question):
         print(f"Erro ao chamar Gemini: {e}")
         return None
 
+def analyze_sentiment(text):
+    """Analyze the sentiment of a given text using Gemini."""
+    try:
+        sentiment_prompt = f"Analise o sentimento do seguinte texto e classifique-o como POSITIVO, NEGATIVO ou NEUTRO. Responda apenas com a palavra de classificação.\nTexto: {text}"
+        response = model.generate_content(sentiment_prompt)
+        return response.text.strip().upper()
+    except Exception as e:
+        print(f"Erro ao analisar sentimento com Gemini: {e}")
+        return "NEUTRO" # Default to neutral if analysis fails
+
 @faq_bp.route("/ask", methods=["POST"])
 def ask_question():
     """Handle user questions."""
@@ -75,15 +85,19 @@ def ask_question():
     if not question:
         return jsonify({"error": "Pergunta não pode estar vazia"}), 400
     
+    # Analyze sentiment of the user's question
+    sentiment = analyze_sentiment(question)
+
     # First, try to find an answer in the local FAQ data
     answer_data, score = find_best_answer(question)
     
     if answer_data and score > 0.7: # Use local FAQ if confidence is high
         return jsonify({
             "answer": answer_data["answer"],
-            "question": answer_data["question"],
+            "question": question,
             "section": answer_data.get("section", ""),
-            "confidence": score
+            "confidence": score,
+            "sentiment": sentiment
         })
     else:
         # If no high-confidence answer from local FAQ, try Gemini
@@ -93,7 +107,8 @@ def ask_question():
                 "answer": gemini_answer,
                 "question": question,
                 "section": "Gerado por IA (Gemini)",
-                "confidence": 1.0 # Assume high confidence from Gemini
+                "confidence": 1.0, # Assume high confidence from Gemini
+                "sentiment": sentiment
             })
         else:
             # Fallback to human support if Gemini also fails or no high-confidence local answer
@@ -102,7 +117,8 @@ def ask_question():
                 "question": question,
                 "section": "",
                 "confidence": 0,
-                "suggest_human": True
+                "suggest_human": True,
+                "sentiment": sentiment
             })
 
 @faq_bp.route("/feedback", methods=["POST"])
