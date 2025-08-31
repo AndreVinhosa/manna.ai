@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demonstração - Widget Manna AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .demo-section p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #6366f1;
+        }
+
+        .feature h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .feature p {
+            color: #666;
+            margin: 0;
+        }
+
+        .integration-code {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+
+        .integration-code pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .notice {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            color: #92400e;
+        }
+
+        .notice strong {
+            color: #78350f;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .demo-section {
+                padding: 20px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Widget Manna AI</h1>
+            <p>Widget de atendimento inteligente para sites parceiros. Integração simples e funcionalidades avançadas de FAQ e suporte.</p>
+        </div>
+
+        <div class="demo-section">
+            <h2>🚀 Demonstração ao Vivo</h2>
+            <p>Clique no botão flutuante no canto inferior direito para testar o widget em ação!</p>
+            
+            <div class="notice">
+                <strong>💡 Dica:</strong> O widget está funcionando nesta página. Experimente clicar no ícone de chat para ver todas as funcionalidades em ação.
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <h3>🎯 FAQ Inteligente</h3>
+                    <p>Sistema de perguntas e respostas com interface intuitiva e feedback dos usuários.</p>
+                </div>
+                <div class="feature">
+                    <h3>👥 Atendimento Humano</h3>
+                    <p>Botão dedicado para solicitar suporte humano quando necessário.</p>
+                </div>
+                <div class="feature">
+                    <h3>📱 Totalmente Responsivo</h3>
+                    <p>Adapta-se perfeitamente a dispositivos móveis e desktops.</p>
+                </div>
+                <div class="feature">
+                    <h3>⚡ Fácil Integração</h3>
+                    <p>Apenas uma linha de código para integrar em qualquer site.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📋 Como Integrar</h2>
+            <p>Para adicionar este widget ao seu site, basta incluir o seguinte código antes do fechamento da tag <code>&lt;/body&gt;</code>:</p>
+
+            <div class="integration-code">
+                <pre>&lt;script&gt;
+(function() {
+    var script = document.createElement('script');
+    script.src = 'https://manna-ai.vercel.app/widget.js';
+    script.async = true;
+    document.head.appendChild(script);
+})();
+&lt;/script&gt;</pre>
+            </div>
+
+            <h3>🎨 Opções de Customização</h3>
+            <p>Você pode personalizar o widget usando data attributes:</p>
+
+            <div class="integration-code">
+                <pre>&lt;script 
+    src="https://manna-ai.vercel.app/widget.js"
+    data-company-name="Sua Empresa"
+    data-primary-color="#your-color"
+    data-position="bottom-left"
+    data-welcome-message="Sua mensagem personalizada"&gt;
+&lt;/script&gt;</pre>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>✨ Funcionalidades</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>🔧 Sem Dependências</h3>
+                    <p>JavaScript vanilla, não requer jQuery ou outras bibliotecas.</p>
+                </div>
+                <div class="feature">
+                    <h3>🎨 Customizável</h3>
+                    <p>Cores, posição, mensagens e branding personalizáveis.</p>
+                </div>
+                <div class="feature">
+                    <h3>📊 Analytics</h3>
+                    <p>Rastreamento de eventos para Google Analytics.</p>
+                </div>
+                <div class="feature">
+                    <h3>♿ Acessível</h3>
+                    <p>Suporte completo a navegação por teclado e leitores de tela.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Widget Manna AI -->
+    <link rel="stylesheet" href="widget.css">
+    <script src="widget.js"></script>
+</body>
+</html>
+
