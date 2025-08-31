@@ -162,11 +162,11 @@
             <button class="faq-toggle" onclick="window.FAQWidget.toggle()">💬</button>
             <div class="faq-chat" id="faq-chat" style="display: none;">
                 <div class="faq-header">
-                    FAQ - Assistente Virtual
+                    Manna Little
                 </div>
                 <div class="faq-messages" id="faq-messages">
                     <div class="message bot">
-                        Olá! 👋 Sou seu assistente virtual. Como posso ajudá-lo hoje?
+                        Olá! A paz do Senhor. 👋 Sou seu assistente virtual, pronto para servi-lo. Em que posso ser útil hoje?
                     </div>
                 </div>
                 <div class="faq-input-area">
