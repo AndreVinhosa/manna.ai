@@ -2,6 +2,7 @@ import json
 import os
 from flask import Blueprint, request, jsonify
 from difflib import SequenceMatcher
+import google.generativeai as genai
 
 faq_bp = Blueprint("faq", __name__)
 
@@ -18,12 +19,16 @@ else:
 with open(FAQ_DATA_PATH, "r", encoding="utf-8") as f:
     faq_data = json.load(f)
 
+# Configure Gemini API
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-pro")
+
 def similarity(a, b):
     """Calculate similarity between two strings."""
     return SequenceMatcher(None, a.lower(), b.lower()).ratio()
 
 def find_best_answer(question):
-    """Find the best answer for a given question."""
+    """Find the best answer for a given question from local FAQ data."""
     best_match = None
     best_score = 0
     
@@ -39,6 +44,28 @@ def find_best_answer(question):
     
     return None, 0
 
+def get_gemini_answer(question):
+    """Get an answer from Gemini API."""
+    try:
+        # Construct a prompt that encourages Gemini to act as a helpful FAQ assistant
+        # and potentially use the provided FAQ data as context.
+        prompt_parts = [
+            "Você é um assistente de FAQ para a Manna Bridge. Responda à seguinte pergunta de forma concisa e útil.",
+            "Se a pergunta for sobre a Manna Bridge, use as informações fornecidas no FAQ abaixo como base para sua resposta.",
+            "Perguntas e Respostas do FAQ da Manna Bridge:\n\n"
+        ]
+        for item in faq_data:
+            prompt_parts.append(f"Q: {item['question']}\nA: {item['answer']}\n")
+        
+        prompt_parts.append(f"\nPergunta do usuário: {question}")
+        prompt_parts.append("Resposta:")
+
+        response = model.generate_content("\n".join(prompt_parts))
+        return response.text
+    except Exception as e:
+        print(f"Erro ao chamar Gemini: {e}")
+        return None
+
 @faq_bp.route("/ask", methods=["POST"])
 def ask_question():
     """Handle user questions."""
@@ -48,9 +75,10 @@ def ask_question():
     if not question:
         return jsonify({"error": "Pergunta não pode estar vazia"}), 400
     
+    # First, try to find an answer in the local FAQ data
     answer_data, score = find_best_answer(question)
     
-    if answer_data:
+    if answer_data and score > 0.7: # Use local FAQ if confidence is high
         return jsonify({
             "answer": answer_data["answer"],
             "question": answer_data["question"],
@@ -58,13 +86,24 @@ def ask_question():
             "confidence": score
         })
     else:
-        return jsonify({
-            "answer": "Desculpe, não encontrei uma resposta para sua pergunta. Você gostaria de falar com um atendente humano?",
-            "question": question,
-            "section": "",
-            "confidence": 0,
-            "suggest_human": True
-        })
+        # If no high-confidence answer from local FAQ, try Gemini
+        gemini_answer = get_gemini_answer(question)
+        if gemini_answer:
+            return jsonify({
+                "answer": gemini_answer,
+                "question": question,
+                "section": "Gerado por IA (Gemini)",
+                "confidence": 1.0 # Assume high confidence from Gemini
+            })
+        else:
+            # Fallback to human support if Gemini also fails or no high-confidence local answer
+            return jsonify({
+                "answer": "Desculpe, não encontrei uma resposta para sua pergunta. Você gostaria de falar com um atendente humano?",
+                "question": question,
+                "section": "",
+                "confidence": 0,
+                "suggest_human": True
+            })
 
 @faq_bp.route("/feedback", methods=["POST"])
 def submit_feedback():
@@ -108,5 +147,3 @@ def get_questions_by_category(category):
     """Get questions by category."""
     questions = [item for item in faq_data if item.get("section", "Geral") == category]
     return jsonify({"questions": questions})
-
-
