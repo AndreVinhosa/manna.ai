@@ -1,7 +1,7 @@
 (function() {
     // Configuração do widget
     const WIDGET_CONFIG = {
-        apiBaseUrl: 'https://manna-ai.vercel.app/api/faq', // Substitua pela URL do seu servidor
+        apiBaseUrl: 'https://seu-dominio.com/api/faq', // Substitua pela URL do seu servidor
         position: 'bottom-right', // bottom-right, bottom-left, top-right, top-left
         theme: {
             primaryColor: '#667eea',
@@ -153,7 +153,7 @@
     const widgetHTML = `
         <div id="faq-widget">
             <button class="faq-toggle" onclick="window.FAQWidget.toggle()">💬</button>
-            <div class="faq-chat" id="faq-chat">
+            <div class="faq-chat" id="faq-chat" style="display: none;">
                 <div class="faq-header">
                     FAQ - Assistente Virtual
                 </div>
@@ -351,9 +351,3 @@
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             window.FAQWidget = new FAQWidget();
-        });
-    } else {
-        window.FAQWidget = new FAQWidget();
-    }
-})();
-
