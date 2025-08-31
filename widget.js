@@ -356,4 +356,3 @@
         window.FAQWidget = new FAQWidget();
     }
 })();
-
