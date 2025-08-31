@@ -1,7 +1,7 @@
 (function() {
     // Configuração do widget
     const WIDGET_CONFIG = {
-        apiBaseUrl: 'https://manna-ai.vercel.app/api/faq', // Substitua pela URL do seu servidor
+        apiBaseUrl: 'https://seu-dominio.com/api/faq', // Substitua pela URL do seu servidor
         position: 'bottom-right', // bottom-right, bottom-left, top-right, top-left
         theme: {
             primaryColor: '#667eea',
@@ -141,13 +141,6 @@
             margin-top: 10px;
         }
 
-        .sentiment-indicator {
-            font-size: 10px;
-            color: #888;
-            margin-top: 5px;
-            text-align: right;
-        }
-
         @media (max-width: 768px) {
             .faq-chat {
                 width: 300px;
@@ -160,13 +153,13 @@
     const widgetHTML = `
         <div id="faq-widget">
             <button class="faq-toggle" onclick="window.FAQWidget.toggle()">💬</button>
-            <div class="faq-chat" id="faq-chat" style="display: none;">
+            <div class="faq-chat" id="faq-chat">
                 <div class="faq-header">
-                    Manna Little
+                    FAQ - Assistente Virtual
                 </div>
                 <div class="faq-messages" id="faq-messages">
                     <div class="message bot">
-                        Olá! A paz do Senhor. 👋 Sou seu assistente virtual, pronto para servi-lo. Em que posso ser útil hoje?
+                        Olá! 👋 Sou seu assistente virtual. Como posso ajudá-lo hoje?
                     </div>
                 </div>
                 <div class="faq-input-area">
@@ -248,11 +241,6 @@
                 // Add bot response
                 const messageId = this.addMessage(data.answer, 'bot');
                 
-                // Add sentiment indicator
-                if (data.sentiment) {
-                    this.addSentimentIndicator(messageId, data.sentiment);
-                }
-
                 // Add feedback buttons if it's a real answer
                 if (data.confidence > 0.3) {
                     this.addFeedbackButtons(messageId, message, data.answer);
@@ -283,14 +271,6 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             
             return messageId;
-        }
-
-        addSentimentIndicator(messageId, sentiment) {
-            const messageElement = document.getElementById(messageId);
-            const sentimentDiv = document.createElement('div');
-            sentimentDiv.className = 'sentiment-indicator';
-            sentimentDiv.textContent = `Sentimento: ${sentiment}`;
-            messageElement.appendChild(sentimentDiv);
         }
 
         addFeedbackButtons(messageId, question, answer) {
@@ -376,3 +356,4 @@
         window.FAQWidget = new FAQWidget();
     }
 })();
+
