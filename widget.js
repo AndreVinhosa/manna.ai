@@ -141,6 +141,13 @@
             margin-top: 10px;
         }
 
+        .sentiment-indicator {
+            font-size: 10px;
+            color: #888;
+            margin-top: 5px;
+            text-align: right;
+        }
+
         @media (max-width: 768px) {
             .faq-chat {
                 width: 300px;
@@ -241,6 +248,11 @@
                 // Add bot response
                 const messageId = this.addMessage(data.answer, 'bot');
                 
+                // Add sentiment indicator
+                if (data.sentiment) {
+                    this.addSentimentIndicator(messageId, data.sentiment);
+                }
+
                 // Add feedback buttons if it's a real answer
                 if (data.confidence > 0.3) {
                     this.addFeedbackButtons(messageId, message, data.answer);
@@ -271,6 +283,14 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             
             return messageId;
+        }
+
+        addSentimentIndicator(messageId, sentiment) {
+            const messageElement = document.getElementById(messageId);
+            const sentimentDiv = document.createElement('div');
+            sentimentDiv.className = 'sentiment-indicator';
+            sentimentDiv.textContent = `Sentimento: ${sentiment}`;
+            messageElement.appendChild(sentimentDiv);
         }
 
         addFeedbackButtons(messageId, question, answer) {
@@ -351,3 +371,8 @@
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             window.FAQWidget = new FAQWidget();
+        });
+    } else {
+        window.FAQWidget = new FAQWidget();
+    }
+})();
