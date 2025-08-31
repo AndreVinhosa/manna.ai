@@ -1,7 +1,7 @@
 (function() {
     // Configuração do widget
     const WIDGET_CONFIG = {
-        apiBaseUrl: 'https://seu-dominio.com/api/faq', // Substitua pela URL do seu servidor
+        apiBaseUrl: 'https://manna-ai.vercel.app/api/faq', // Substitua pela URL do seu servidor
         position: 'bottom-right', // bottom-right, bottom-left, top-right, top-left
         theme: {
             primaryColor: '#667eea',
